@@ -1,0 +1,27 @@
+version: '3'
+services:
+
+  postgresql_testing:
+    image: postgres:13
+    container_name: postgresql_testing
+
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=testing
+
+  testing:
+    container_name: testing
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: on-failure
+    ports:
+      - "8080:8080"
+    environment:
+      server.port: 8080
+      spring.datasource.url: jdbc:postgresql://postgresql_testing:5432/testing
+
+
+
+
